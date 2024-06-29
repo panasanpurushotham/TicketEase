@@ -1,0 +1,43 @@
+server:
+  port: 8083
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
+spring:
+  banner:
+    location: classpath:banner.txt
+  application:
+    name: movie-service
+  h2:
+    console:
+      enabled: true
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:movieschema;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS movieschema
+    platform: h2
+    initialization-mode: always
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          okta:
+#            user-name-attribute: userNumber
+#      resourceserver:
+#        jwt:
+#          issuer-uri: https://dev-87992152.okta.com/oauth2/default
+
+
+actuators:
+  username: test
+  password: test
+
+https:
+  proxyHost: internet.proxy.fedex.com
+  proxyPort: 3128
