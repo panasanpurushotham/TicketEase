@@ -6,11 +6,13 @@ import com.ticketease.user_service.dto.response.UserResponseDto;
 import com.ticketease.user_service.entity.User;
 import com.ticketease.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -37,9 +39,17 @@ public class UserCrudController {
         return ResponseEntity.ok(userService.getUserDetails(id));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        List<UserResponseDto> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+
+
     @PostMapping("/authenticate")
-    public ResponseEntity<User> authenticate(@RequestHeader(name = "email", required = false) String email, @RequestHeader(name = "password",required = false) String password) {
-        return ResponseEntity.ok(userService.authenticate(email, password));
+    public User authenticate(@RequestBody User user) throws Exception{
+        return this.userService.authenticate(user.getEmail(),user.getPassword());
     }
 
 }
