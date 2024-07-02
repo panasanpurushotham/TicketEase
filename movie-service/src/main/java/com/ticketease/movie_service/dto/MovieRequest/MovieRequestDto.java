@@ -9,7 +9,7 @@ package com.ticketease.movie_service.dto.MovieRequest;
         private String genre;
         private int duration; // duration in minutes
         private String releaseDate; // Assuming date as String for simplicity
-        private String imageUrl;
+        private String imageurl;
 
         // Getters and Setters
 
@@ -62,11 +62,11 @@ package com.ticketease.movie_service.dto.MovieRequest;
         }
 
         public String getImageUrl() {
-            return imageUrl;
+            return imageurl;
         }
 
-        public void setImageUrl(String imageUrl) {
-            this.imageUrl = imageUrl;
+        public void setImageUrl(String imageurl) {
+            this.imageurl = imageurl;
         }
     }
 

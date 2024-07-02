@@ -14,7 +14,7 @@ import java.time.LocalDate;
         private String genre;
         private int duration; // duration in minutes
         private LocalDate releaseDate;
-        private String imageUrl;
+        private String imageurl;
 
         // Getters and Setters
 
@@ -75,11 +75,11 @@ import java.time.LocalDate;
         }
 
         public String getImageUrl() {
-            return imageUrl;
+            return imageurl;
         }
 
-        public void setImageUrl(String imageUrl) {
-            this.imageUrl = imageUrl;
+        public void setImageUrl(String imageurl) {
+            this.imageurl = imageurl;
         }
     }
 

@@ -21,11 +21,11 @@ public class Movie {
 
     private int duration; // duration in minutes
 
-    @Column(name = "release_date")
-    private LocalDate releaseDate;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    private java.time.LocalDate releaseDate;
+
+
+    private String imageurl ;
 
     // Getters and Setters
 
@@ -86,10 +86,10 @@ public class Movie {
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return imageurl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrl(String imageurl) {
+        this.imageurl = imageurl;
     }
 }
