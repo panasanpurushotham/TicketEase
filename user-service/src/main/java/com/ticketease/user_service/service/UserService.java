@@ -5,6 +5,8 @@ import com.ticketease.user_service.dto.request.UserRequestDto;
 import com.ticketease.user_service.dto.response.UserResponseDto;
 import com.ticketease.user_service.entity.User;
 
+import java.util.List;
+
 public interface UserService {
 
 
@@ -13,6 +15,13 @@ public interface UserService {
 
     UserResponseDto getUserDetails(Long id);
 
-    User authenticate(String email, String password);
+    List<UserResponseDto> getAllUsers();
+
+
+    User getEmail(String email);
+
+    User authenticate(String email, String password) throws Exception;
+
+
 
 }

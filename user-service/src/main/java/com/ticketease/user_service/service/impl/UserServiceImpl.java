@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -37,13 +40,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User authenticate(String email, String password) {
+    public List<UserResponseDto> getAllUsers() {
+        List<User> users = (List<User>) userRepository.findAll();
+        return users.stream()
+                .map(user -> {
+                    UserResponseDto dto = new UserResponseDto();
+                    dto.setId(user.getId());
+                    dto.setUserName(user.getUsername());
+                    dto.setEmail(user.getEmail());
+                    dto.setPassword(user.getPassword());
+                    dto.setRole(user.getRole());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+    }
+    @Override
+    public User getEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User authenticate(String email, String password) throws Exception {
         User user = userRepository.findByEmail(email);
-//        if (user.getPassword().equals(password)) {
+        if (user.getPassword().equals(password)) {
             return user;
-//        }else {
-//            throw new RuntimeException("Credentials are invalid");
-//        }
+        }else {
+            throw new Exception("Credentials are invalid");
+        }
     }
 
 }
