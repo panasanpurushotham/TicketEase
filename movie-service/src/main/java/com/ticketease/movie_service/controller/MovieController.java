@@ -7,6 +7,8 @@ import com.ticketease.movie_service.dto.MovieRequest.MovieRequestDto;
 import com.ticketease.movie_service.dto.MovieResponse.MovieResponseDto;
 import com.ticketease.movie_service.entity.Movie;
 import com.ticketease.movie_service.service.MovieService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,22 +17,27 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+
+
     @RestController
     @RequestMapping("/api/movies")
     @CrossOrigin(origins = "http://localhost:4200")
     public class MovieController {
-
+        Logger logger = LoggerFactory.getLogger(MovieController.class);
         @Autowired
         private MovieService movieService;
 
         @PostMapping("/create")
         public ResponseEntity<Void> createMovie(@RequestBody MovieRequestDto requestDto) {
+
             Movie movie = movieService.saveMovie(requestDto);
+            logger.info("Movie saved successfully: {}", movie.toString());
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
                     .buildAndExpand(movie.getId())
                     .toUri();
+
             return ResponseEntity.created(location).build();
         }
 
@@ -66,8 +73,8 @@ import java.util.List;
         }
 
         @GetMapping("/searchbydate")
-        public ResponseEntity<List<MovieResponseDto>> filterMoviesByReleaseDate(@RequestParam String startDate, @RequestParam String endDate) {
-            return ResponseEntity.ok(movieService.filterMoviesByReleaseDate(startDate, endDate));
+        public ResponseEntity<List<MovieResponseDto>> filterMoviesByReleaseDate(@RequestParam String startDate) {
+            return ResponseEntity.ok(movieService.filterMoviesByReleaseDate(startDate));
         }
     }
 
