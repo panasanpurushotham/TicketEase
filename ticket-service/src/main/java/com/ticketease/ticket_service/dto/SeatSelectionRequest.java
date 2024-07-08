@@ -1,8 +1,13 @@
-package com.ticketease.ticket_service.Seat_Selction;
+package com.ticketease.ticket_service.dto;
 
 import java.util.List;
 
 public class SeatSelectionRequest {
+
+    private Long movieId;
+    private String showtime;
+    private List<String> selectedSeats;
+
     public Long getMovieId() {
         return movieId;
     }
@@ -27,8 +32,5 @@ public class SeatSelectionRequest {
         this.selectedSeats = selectedSeats;
     }
 
-    private Long movieId;
-    private String showtime;
-    private List<String> selectedSeats;
 
 }
