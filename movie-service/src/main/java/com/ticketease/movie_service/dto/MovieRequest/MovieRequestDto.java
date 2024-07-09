@@ -1,15 +1,24 @@
 
 package com.ticketease.movie_service.dto.MovieRequest;
 
-    public class MovieRequestDto {
+import com.fasterxml.jackson.annotation.*;
+
+
+
+import java.time.LocalDate;
+
+public class MovieRequestDto {
 
         private String title;
         private String description;
         private String director;
         private String genre;
         private int duration; // duration in minutes
-        private String releaseDate; // Assuming date as String for simplicity
-        private String imageurl;
+
+    @JsonProperty("release_Date")
+    private LocalDate releaseDate; // Assuming date as String for simplicity
+    @JsonProperty("image_url")
+    private String imageUrl;
 
         // Getters and Setters
 
@@ -53,21 +62,37 @@ package com.ticketease.movie_service.dto.MovieRequest;
             this.duration = duration;
         }
 
-        public String getReleaseDate() {
-            return releaseDate;
-        }
 
-        public void setReleaseDate(String releaseDate) {
-            this.releaseDate = releaseDate;
-        }
 
-        public String getImageUrl() {
-            return imageurl;
-        }
-
-        public void setImageUrl(String imageurl) {
-            this.imageurl = imageurl;
-        }
+    @JsonFormat(pattern="yyyy-MM-dd")
+    public LocalDate getReleaseDate() {
+        return releaseDate;
     }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+
+    @Override
+    public String toString() {
+        return "MovieRequestDto{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", director='" + director + '\'' +
+                ", genre='" + genre + '\'' +
+                ", duration=" + duration +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
+    }
+}
 
 

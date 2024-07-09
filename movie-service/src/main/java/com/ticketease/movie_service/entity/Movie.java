@@ -1,6 +1,10 @@
 package com.ticketease.movie_service.entity;
-
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
+
+
+
 import java.time.LocalDate;
 
 @Entity
@@ -22,10 +26,11 @@ public class Movie {
     private int duration; // duration in minutes
 
 
-    private java.time.LocalDate releaseDate;
+    @Column(name = "release_Date")
+    private LocalDate releaseDate;
 
-
-    private String imageurl ;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     // Getters and Setters
 
@@ -86,10 +91,24 @@ public class Movie {
     }
 
     public String getImageUrl() {
-        return imageurl;
+        return imageUrl;
     }
 
-    public void setImageUrl(String imageurl) {
-        this.imageurl = imageurl;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", director='" + director + '\'' +
+                ", genre='" + genre + '\'' +
+                ", duration=" + duration +
+                ", releaseDate=" + releaseDate +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
     }
 }
