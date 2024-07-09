@@ -1,7 +1,4 @@
 package com.ticketease.movie_service.service.impl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 import com.ticketease.movie_service.dto.MovieRequest.MovieRequestDto;
 import com.ticketease.movie_service.dto.MovieResponse.MovieResponseDto;
@@ -10,77 +7,95 @@ import com.ticketease.movie_service.mapper.MapperUtil;
 import com.ticketease.movie_service.repository.MovieRepository;
 import com.ticketease.movie_service.service.MovieService;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-    @Service
-    public class MovieServiceImpl implements MovieService {
-        private static final Logger logger = LoggerFactory.getLogger(MovieService.class);
+@Service
+public class MovieServiceImpl implements MovieService {
 
-        @Autowired
-        MovieRepository movieRepository;
+    private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
 
-        @Override
-        public Movie saveMovie(MovieRequestDto dto) {
+    @Autowired
+    private MovieRepository movieRepository;
 
-            Movie movie = MapperUtil.toMovieEntity(dto);
-            logger.info(" output " + movie.toString());
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
-            return movieRepository.save(movie);
-        }
 
-        @Override
-        public MovieResponseDto getMovieDetails(Long id) {
-            Movie movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            return MapperUtil.toMovieResponseDto(movie);
-        }
+    @Override
+    @Transactional
+    public Movie saveMovie(MovieRequestDto dto) {
+        Movie movie = MapperUtil.toMovieEntity(dto);
+        logger.info("Saving movie: {}", movie);
 
-        @Override
-        public List<MovieResponseDto> getAllMovies() {
-            return movieRepository.findAll().stream()
-                    .map(movie ->MapperUtil.toMovieResponseDto(movie))
-                    .collect(Collectors.toList());
-        }
+        movie = movieRepository.save(movie);
 
-        @Override
-        public Movie updateMovie(Long id, MovieRequestDto dto) {
-            Movie movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            Movie newmovie = MapperUtil.toUpdateMovieEntity(movie, dto);
-            return movieRepository.save(newmovie);
-        }
+        // Send message with movie ID to JMS queue
+        sendMovieIdToQueue(movie.getId());
 
-        @Override
-        public void deleteMovie(Long id) {
-            Movie movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-            movieRepository.delete(movie);
-        }
-
-        @Override
-        public List<MovieResponseDto> searchMoviesByTitle(String title) {
-            return movieRepository.findByTitleContaining(title).stream()
-                    .map(movie ->MapperUtil.toMovieResponseDto(movie))
-                    .collect(Collectors.toList());
-        }
-
-        @Override
-        public List<MovieResponseDto> filterMoviesByGenre(String genre) {
-            return movieRepository.findByGenre(genre).stream()
-                    .map(movie -> MapperUtil.toMovieResponseDto(movie))
-                    .collect(Collectors.toList());
-        }
-
-        @Override
-        public List<MovieResponseDto> filterMoviesByReleaseDate(String startDate) {
-            LocalDate start = LocalDate.parse(startDate);
-
-            return movieRepository.findByReleaseDate(start).stream()
-                    .map(movie ->MapperUtil.toMovieResponseDto(movie))
-                    .collect(Collectors.toList());
-        }
+        return movie;
     }
 
+    @Override
+    public MovieResponseDto getMovieDetails(Long id) {
+        Movie movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return MapperUtil.toMovieResponseDto(movie);
+    }
 
+    @Override
+    public List<MovieResponseDto> getAllMovies() {
+        return movieRepository.findAll().stream()
+                .map(MapperUtil::toMovieResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public Movie updateMovie(Long id, MovieRequestDto dto) {
+        Movie movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Movie updatedMovie = MapperUtil.toUpdateMovieEntity(movie, dto);
+        return movieRepository.save(updatedMovie);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMovie(Long id) {
+        Movie movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        movieRepository.delete(movie);
+    }
+
+    @Override
+    public List<MovieResponseDto> searchMoviesByTitle(String title) {
+        return movieRepository.findByTitleContaining(title).stream()
+                .map(MapperUtil::toMovieResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MovieResponseDto> filterMoviesByGenre(String genre) {
+        return movieRepository.findByGenre(genre).stream()
+                .map(MapperUtil::toMovieResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MovieResponseDto> filterMoviesByReleaseDate(String startDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        return movieRepository.findByReleaseDate(start).stream()
+                .map(MapperUtil::toMovieResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    private void sendMovieIdToQueue(Long movieId) {
+        jmsTemplate.convertAndSend("movieQueue", movieId.toString());
+        logger.info("Sent movie ID {} to JMS queue", movieId);
+    }
+}
