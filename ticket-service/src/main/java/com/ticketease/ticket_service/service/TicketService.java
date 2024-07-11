@@ -8,11 +8,11 @@ import java.util.List;
 public interface TicketService {
     Ticket bookTicket(Ticket ticket);
 
-    void cancelTicket(Long ticketId);
+    void cancelTicket(Long Id);
 
-    List<Ticket> getBookingHistory(Long userId);
+    List<Ticket> getBookingHistory(Long user_id);
 
-    int getAvailableSeats(Long movieId, String showtime);
+    int getAvailableSeats(Long movie_id, String showtime);
 
     String selectSeats(Long movieId, String showtime, List<String> selectedSeats);
 

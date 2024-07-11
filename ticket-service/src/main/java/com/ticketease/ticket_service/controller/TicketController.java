@@ -3,6 +3,7 @@ package com.ticketease.ticket_service.controller;
 
 import com.ticketease.ticket_service.entity.Ticket;
 import com.ticketease.ticket_service.service.TicketService;
+import com.ticketease.ticket_service.service.impl.TicketServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,11 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class TicketController {
 
+//    @Autowired
+//    private TicketService ticketService;
+
     @Autowired
-    private TicketService ticketService;
+    private TicketServiceImpl ticketService;
 
     // Endpoint to book a ticket
     @PostMapping("/book")

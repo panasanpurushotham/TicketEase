@@ -1,0 +1,64 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: gateway-service
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: https://dev-87992152.okta.com/oauth2/default  # Replace with your issuer URI
+#          jwk-set-uri: https://dev-87992152.okta.com/oauth2/default/v1/keys
+#      client:
+#        registration:
+#          okta:  # Name of the client registration
+#            client-id: 0oahs6wfr5ZzkhPkW5d7    # Replace with your client ID
+#            client-secret: -rsmkvVSfgGrsPj3kpCCy6eYt0CeBU1_Yv5FwWwvp_kkmwqfk3FCutSfkkayh1Y4  # Replace with your client secret (secure!)
+#            scope: order
+#            authorization-uri: https://dev-87992152.okta.com/oauth2/default/v1/authorization
+#        provider:
+#          okta:
+#            issuer-url: https://dev-87992152.okta.com/oauth2/default
+#            authorization-uri: https://dev-87992152.okta.com/oauth2/default/v1/authorize
+#            token-uri: https://dev-87992152.okta.com/oauth2/default/v1/token
+
+  banner:
+    location: classpath:banner.txt
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+        - id: ticket-service
+          uri: lb://ticket-service
+          predicates:
+            - Path=/api/tickets/**
+        - id: movie-service
+          uri: lb://movie-service
+          predicates:
+            - Path=/api/movies/**
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8099/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+pca:
+  actuators:
+    username: test
+    password: test
+
+https:
+  proxyHost: internet.proxy.fedex.com
+  proxyPort: 3128
+
+

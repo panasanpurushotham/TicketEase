@@ -23,7 +23,7 @@ spring:
     url: jdbc:h2:mem:userschema;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS userschema
     platform: h2
     initialization-mode: always
-#  security:
+
 #    oauth2:
 #      client:
 #        provider:

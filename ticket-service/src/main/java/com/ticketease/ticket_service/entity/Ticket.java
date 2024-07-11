@@ -4,6 +4,7 @@ package com.ticketease.ticket_service.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "tickets")
@@ -13,20 +14,88 @@ public class Ticket {
     //id, user_id, movie_id, booking_date, ticket_status, and ticket_type.
     private Long id;
 
-    private Long user_id;
+    public Long getUserId() {
+        return userId;
+    }
 
-    private Long movie_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-    private LocalDate booking_date;
+    public Long getMovieId() {
+        return movieId;
+    }
 
-    private String  ticket_status;//(e.g., booked, canceled).
+    public void setMovieId(Long movieId) {
+        this.movieId = movieId;
+    }
 
-    private String  ticket_type; //(e.g., regular, premium).
 
-    private LocalDateTime showtime;
+
+    public String getTicketStatus() {
+        return ticketStatus;
+    }
+
+    public void setTicketStatus(String ticketStatus) {
+        this.ticketStatus = ticketStatus;
+    }
+
+    public String getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(String ticketType) {
+        this.ticketType = ticketType;
+    }
+
+
+
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    private Long userId;
+
+    private Long movieId;
+
+    private String bookingDate;
+
+    private String  ticketStatus;//(e.g., booked, canceled).
+
+    private String  ticketType; //(e.g., regular, premium).
+
+    private String showTime;
+
+    public String getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(String bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public String getShowTime() {
+        return showTime;
+    }
+
+    public void setShowTime(String showTime) {
+        this.showTime = showTime;
+    }
+
     private String seatNumber;
     private Long ticketId;
-
 
     public Long getId() {
         return id;
@@ -36,66 +105,6 @@ public class Ticket {
         this.id = id;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public void setBookingDate(Date date) {
     }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
-    }
-
-    public Long getMovie_id() {
-        return movie_id;
-    }
-
-    public void setMovie_id(Long movie_id) {
-        this.movie_id = movie_id;
-    }
-
-    public LocalDate getBooking_date() {
-        return booking_date;
-    }
-
-    public void setBooking_date(LocalDate booking_date) {
-        this.booking_date = booking_date;
-    }
-
-    public String getTicket_status() {
-        return ticket_status;
-    }
-
-    public void setTicket_status(String ticket_status) {
-        this.ticket_status = ticket_status;
-    }
-
-    public String getTicket_type() {
-        return ticket_type;
-    }
-
-    public void setTicket_type(String ticket_type) {
-        this.ticket_type = ticket_type;
-    }
-    public LocalDateTime getShowtime() {
-        return showtime;
-    }
-
-    public void setShowtime(LocalDateTime showtime) {
-        this.showtime = showtime;
-    }
-    public String getSeatNumber() {
-        return seatNumber;
-    }
-
-    public void setSeatNumber(String seatNumber) {
-        this.seatNumber = seatNumber;
-    }
-    public Long getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(Long ticketId) {
-        this.ticketId = ticketId;
-    }
-
-
 }

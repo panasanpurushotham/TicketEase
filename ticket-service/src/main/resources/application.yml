@@ -40,4 +40,3 @@ actuators:
 s:
   proxyHost: internet.proxy.fedex.com
   proxyPort: 3128
-http
